@@ -1,16 +1,11 @@
 # LOTS of code inspired/pulled from https://github.com/adafruit/Adafruit_Python_SSD1306/blob/master/examples/stats.py
-# LAMEMAKES 2022
 
 import time
-
-import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
-
+import subprocess
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
-
-import subprocess
 
 class OledController:
     def __init__(self):
