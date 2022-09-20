@@ -30,3 +30,10 @@ This will generate the configuration at ``` /etc/twitter_printer/config/config.j
 
 The Twitter printer can be run using the command:
 ``` sudo python3 -m twitter-printer.main ```
+
+
+## NOTES:
+
+- To run the printer on every boot & using debian, add the startup command to ```/etc/rc.local```
+- The twitter-printer _MUST_ be run as sudo/root. It won't (in my experience) have proper permissions to access the USB printer otherwise.
+- This is a WIP, and although mostly done some spitshine will come in the following weeks ;)
