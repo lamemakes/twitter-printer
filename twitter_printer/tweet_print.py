@@ -1,84 +1,89 @@
 from PIL import Image
 from escpos.printer import Usb
-import twitter_printer.display_controller as display_controller
 import time
 import json
 
+# vend = 0x1504, prod = 0x003d
+class TweetPrinter:
+    def __init__(self, cfg):
+        self.cfg = cfg
 
-p = Usb(0x1504, 0x003d, 0, out_ep=2)
+        self.p = Usb(
+            idVendor=int(self.cfg.get("idVendor"), 16),
+            idProduct=int(self.cfg.get("idProduct"), 16),
+            out_ep=2
+        )
 
-oled_control = display_controller.OledController()
-oled_control.displayReady()
+    # Expects a tweet object containing something of the following:
+    # {"username": "@testUser", "content": "This is a test tweet", "qr": "https://lamemakes.com", "pics": ["lamemakes.jpg"]}
+    # Username & content are the only required fields.
+    def printTweet(self, tweet):
+        username = tweet.get("username")
+        content = tweet.get("content")
 
-# Expects a tweet object containing something of the following:
-# {"username": "@testUser", "content": "This is a test tweet", "qr": "https://lamemakes.com", "pics": ["lamemakes.jpg"]}
-# Username & content are the only required fields.
-def printTweet(tweet, cfg):
-    username = tweet.get("username")
-    content = tweet.get("content")
+        if tweet.get("error"):
+            self.p.set(align="left", text_type=u'normal')
+            self.p.text("@" + username + " caused an error:\n")
+            self.p.set(align="center", text_type=u'b')
+            self.p.text(content + "\n")
+            self.p.text("Nice! You broke me...")
+            self.p.cut()
+            return
 
-    if tweet.get("error"):
-        p.set(align="left", text_type=u'normal')
-        p.text("@" + username + " caused an error:\n")
-        p.set(align="center", text_type=u'b')
-        p.text(content + "\n")
-        p.text("Nice! You broke me...")
-        p.cut()
-        return
+        # Print tweet username & content
+        self.p.set(align="left", text_type=u'normal')
+        self.p.text("@" + username + " tweeted:\n")
+        self.p.set(align="center", text_type=u'b')
+        self.p.text(content)
 
-    oled_control.displayPrintingNewTweet(username)
-    time.sleep(2) # Sleeps are just to allow the printing status screens to be seen [1]
+        # Print all tweet QR codes
+        if tweet.get("qr"):
+            self.printQR(tweet.get("qr"))
 
-    # Print tweet username & content
-    p.set(align="left", text_type=u'normal')
-    p.text("@" + username + " tweeted:\n")
-    p.set(align="center", text_type=u'b')
-    p.text(content)
+        # Print all tweet pics
+        if tweet.get("pics"):
+            for pic in tweet.get("pics"):  
+                self.printImage(pic)
+        
+        # Print the footer
+        if self.cfg.get("footerMessage") and self.cfg.get("footerMessage") != "":
+            self.printFooter(self.cfg.get("footerMessage"))
 
-    # Print all tweet QR codes
-    if tweet.get("qr"):
-        printQR(tweet.get("qr"))
-
-    # Print all tweet pics
-    if tweet.get("pics"):
-        for pic in tweet.get("pics"):  
-            printImage(pic)
-    
-    # Print the footer
-    if cfg.get("footerMessage") and cfg.get("footerMessage") != "":
-        printFooter(cfg.get("footerMessage"))
-
-    # Cut the paper
-    p.cut()
-
-    time.sleep(1) # Sleeps are just to allow the printing status screens to be seen [2]
-    oled_control.displayReady()
-
-
-def printImage(filename):
-    img = Image.open(filename).convert('RGB')
-    format = filename.split(".")[-1]
-    if format.upper() == "JPG":
-        format = "JPEG"
-    if img.width > 500:
-        resized_img = img.resize((500, round((500 / img.width) * img.height)))
-        resized_img.save(filename, format=format)
-    p.image(filename)
+        # Cut the paper
+        self.p.cut()
 
 
-def printQR(text):
-    p.qr(content=text, size=6)
+    def printImage(self, filename):
+        img = Image.open(filename).convert('RGB')
+        format = filename.split(".")[-1]
+        if format.upper() == "JPG":
+            format = "JPEG"
+        if img.width > 500:
+            resized_img = img.resize((500, round((500 / img.width) * img.height)))
+            resized_img.save(filename, format=format)
+        self.p.image(filename)
 
 
-def printFooter(footerMsg):
-    p.set(align="center", text_type=u'normal')
-    p.text("\n" * 4)
-    p.text(footerMsg)
+    def printQR(self, text):
+        self.p.qr(content=text, size=6)
+
+
+    def printFooter(self, footerMsg):
+        self.p.set(align="center", text_type=u'normal')
+        self.p.text("\n" * 4)
+        self.p.text(footerMsg)
 
 
 if __name__ == "__main__":
-    # Testing & stuff
-    oled_control.displayReady()
+
+    cfg = {
+        'watchUser': '@lame_printer',
+        'nastyWords': [],
+        'footerMessage': 'lamemakes @ ROC Maker Faire 2022',
+        'oledDisplay': True
+    }
+
+    tweet_printer = TweetPrinter(cfg)
 
     tweet = {
         "username" : "bingggus",
@@ -86,7 +91,7 @@ if __name__ == "__main__":
         "error" : None
     }
 
-    printTweet(tweet)
+    tweet_printer.printTweet(tweet)
 
     tweet = {
         "username" : "beanboy420",
@@ -94,4 +99,4 @@ if __name__ == "__main__":
         "error" : None
     }
 
-    printTweet(tweet)
+    tweet_printer.printTweet(tweet)

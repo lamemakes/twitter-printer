@@ -19,11 +19,20 @@ The code is packaged as a Python package, but is not yet up on PyPi. So for the 
 Upon initial installation, run the package using:
 ``` sudo python3 -m twitter-printer.main ```
 
+Obtain the vendor & product ID's of the USB printer via:
+``` lsusb ```
+The output should look something like the following:
+``` Bus 001 Device 002: ID 1504:003d Bixolon CO LTD SRP-350plusIII ```
+Where ``` 1504 ``` is the Vendor ID, and ```003d ``` is the Product ID.
+
+
 This will generate the configuration at ``` /etc/twitter_printer/config/config.json ```, populate the needed fields accordingly:
 - ```watchUser``` : Username to monitor on twitter for new tweets. i.e., ```@lame_printer``` would be used to watch for tweets containing such.
 - ```nastyWords``` : A list of terms that will filter out tweets if the tweet contains that word. Filter nasty words.
 - ```footerMessage``` : A message to be printed at the bottom of every tweet print, can be anything.
 - ```oledDisplay``` : A boolean value to enable/disable an OLED display output. False by default.
+- ```idVendor``` : The previously noted vendor ID.
+- ```idProduct``` : The previously noted product ID.
 
 
 ## Usage
@@ -37,3 +46,4 @@ The Twitter printer can be run using the command:
 - To run the printer on every boot & using debian, add the startup command to ```/etc/rc.local```
 - The twitter-printer **_MUST_** be run as sudo/root. It won't (in my experience) have proper permissions to access the USB printer otherwise.
 - This is a WIP, and although mostly done some spitshine will come in the following weeks ;)
+- All logging output goes to ```/etc/twitter_printer/logging/twitter_printer.log```
