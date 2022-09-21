@@ -13,7 +13,7 @@ The code is packaged as a Python package, but is not yet up on PyPi. So for the 
 
 1. (Optional) Install the Adafruit OLED library ``` sudo pip3 install git+https://github.com/adafruit/Adafruit_Python_SSD1306.git#egg=Adafruit_SSD1306 ```
 
-2. Install twitter-printer from the  ``` sudo pip3 install git+https://github.com/lamemakes/twitter-printer.git#egg=twitter-printer ```
+2. Install twitter-printer  ``` sudo pip3 install git+https://github.com/lamemakes/twitter-printer.git#egg=twitter-printer ```
 
 
 ## Configuration
