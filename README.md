@@ -3,7 +3,7 @@
 The lame twitter printer is a Raspberry Pi Zero hacked onto a USB receipt printer, combined with twitter will print
 all tweets that are tweeted at it!
 
-This project utilizes the [twint](https://github.com/twintproject/twint) Python library, allowing for seemingly unlimited, quick twitter requests & queries.
+This project utilizes the [twint](https://github.com/twintproject/twint) Python library, allowing for seemingly unlimited, quick Twitter requests & queries, along with not requiring a login or authenicated API. Thanks, twint!
 
 A fun program that I (lamemakes) will use at the Rochester Maker Faire 2022. Use the code for whatever you like!
 
