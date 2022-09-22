@@ -2,7 +2,7 @@
 
 The lame twitter printer is a Raspberry Pi Zero W hacked onto a USB receipt printer, combined with twitter will print all tweets (and included static media) that are tweeted at it!
 
-This project utilizes the [twint](https://github.com/twintproject/twint) Python library, allowing for seemingly unlimited, quick twitter requests & queries.
+This project utilizes the [twint](https://github.com/twintproject/twint) Python library, allowing for seemingly unlimited, quick Twitter requests & queries, along with not requiring a login or authenicated API. Thanks, twint!
 
 A fun program that I (lamemakes) will use at the Rochester Maker Faire 2022. Use the code for whatever you like!
 
@@ -27,7 +27,7 @@ What I used:
 
     1. (Optional) Install the Adafruit OLED library ```sudo pip3 install git+https://github.com/adafruit/Adafruit_Python_SSD1306.git#egg=Adafruit_SSD1306```
 
-    2. Install twitter-printer from the  ```sudo pip3 install git+https://github.com/lamemakes/twitter-printer.git#egg=twitter-printer```
+    2. Install twitter-printer  ```sudo pip3 install git+https://github.com/lamemakes/twitter-printer.git#egg=twitter-printer```
 
 
 ## Configuration
@@ -67,3 +67,4 @@ It can print images that are attached to tweets, and QR codes by encapsulating t
 - This is a WIP, and although mostly done some spitshine will come in the following weeks ;)
 - All logging output goes to ```/etc/twitter_printer/logging/twitter_printer.log```
 - Package may/may not be uploaded to PyPi. Will be demand based
+
