@@ -13,7 +13,7 @@ What I used:
 - Raspberry Pi Zero W
 - Bixolon SRP-350PLUSIII receipt printer
 - An I2C 128x64 OLED display
-- A striped down 12v-to-5v USB car charger (to power the RPi)
+- A stripped down 12v-to-5v USB buck converter (to power the RPi)
 - Custom 3D printed bracket to mount the hardware in the printer
 
 
