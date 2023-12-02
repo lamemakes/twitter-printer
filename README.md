@@ -1,3 +1,5 @@
+**NOTE! This project has been permanently archived and will not be maintained.** Any scraping/twitter APIs have been severly. Also, it's a shit platform spewing hate speech and misinformation. Come join the federated ActivityPub folks! There will likely be a federated version of this project.
+
 # A Lame Twitter Printer
 
 The lame twitter printer is a Raspberry Pi Zero W hacked onto a USB receipt printer, combined with twitter will print all tweets (and included static media) that are tweeted at it!
